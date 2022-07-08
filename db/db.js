@@ -65,9 +65,11 @@ mongoClient.connect(async (err) => {
       });
     },
   });
-});
 
-setTimeout(async () => {
-  await mongoClient.close();
-  console.log('Connection to MongoDB closed!');
-}, 60000);
+  setTimeout(async () => {
+    await producer.disconnect();
+    await consumer.disconnect();
+    await mongoClient.close();
+    console.log('Connection to MongoDB closed!');
+  }, 60000);
+});

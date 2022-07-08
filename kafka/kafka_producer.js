@@ -1,5 +1,7 @@
 const { Partitioners } = require('kafkajs');
 const kafka = require('./kafka_config');
+const sampleData = require('./sample_data.json');
+
 
 const initProducer = async () => {
   const producer = kafka.producer({
@@ -10,8 +12,10 @@ const initProducer = async () => {
   await producer.connect();
   console.log('Kafka Producer connected!');
 
-  const message = { key: 'xD' };
   const sendNewMessage = async () => {
+    const randomIndex = Math.floor(Math.random() * sampleData.requests.length);
+    const message = sampleData.requests[randomIndex];
+
     await producer.send({
       topic: 'users',
       messages: [

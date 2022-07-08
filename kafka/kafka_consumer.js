@@ -14,6 +14,11 @@ const initConsumer = async () => {
       });
     },
   });
+
+  setTimeout(async () => {
+    await consumer.disconnect();
+    console.log('Kafka Consumer disconnected!');
+  }, 60000);
 }
 
 initConsumer().catch(async (error) => {
