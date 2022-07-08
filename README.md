@@ -1,2 +1,2 @@
 # kafka-nodejs-mongodb
-A system that integrates Kafka, Mosquitto and MongoDB using NodeJS driver
+A system that integrates Kafka and MongoDB using NodeJS driver
