@@ -1,5 +1,4 @@
 const { Partitioners } = require('kafkajs');
-
 const kafka = require('./kafka_config');
 
 const initProducer = async () => {
@@ -9,7 +8,7 @@ const initProducer = async () => {
   });
 
   await producer.connect();
-  console.log('Kafka Producer connected! Sending message...');
+  console.log('Kafka Producer connected!');
 
   const message = { key: 'xD' };
   const sendNewMessage = async () => {
@@ -20,7 +19,7 @@ const initProducer = async () => {
       ],
     });
 
-    console.log('Message(s) sent!');
+    console.log('Message sent!');
   }
 
   const interval = setInterval(sendNewMessage, 4000);
