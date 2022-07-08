@@ -3,7 +3,6 @@ const kafka = require('../kafka/kafka_config');
 const { Partitioners } = require('kafkajs');
 
 const mongoURI = "mongodb+srv://gcloud07:ssc0158g072022@gcloud07.kk7msqf.mongodb.net/?retryWrites=true&w=majority";
-// const mongoURI = "mongodb://localhost:3001";
 const mongoClient = new MongoClient(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 
 mongoClient.connect(async (err) => {
