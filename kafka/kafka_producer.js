@@ -1,5 +1,4 @@
-const { Kafka } = require('kafkajs');
-const { Partitioners } = require('kafkajs')
+const { Partitioners } = require('kafkajs');
 
 const kafka = require('./kafka_config');
 
@@ -10,20 +9,28 @@ const initProducer = async () => {
   });
 
   await producer.connect();
-  console.log('Producer connected! Sending message...');
+  console.log('Kafka Producer connected! Sending message...');
 
-  await producer.send({
-    topic: 'test-topic',
-    messages: [
-      { value: 'Hello, deu bom!!' },
-    ],
-  });
+  const message = { key: 'xD' };
+  const sendNewMessage = async () => {
+    await producer.send({
+      topic: 'users',
+      messages: [
+        { value: JSON.stringify(message) },
+      ],
+    });
 
-  console.log('Message sent! Disconnecting...');
-  console.log('Producer disconnected!');
-  await producer.disconnect();
+    console.log('Message(s) sent!');
+  }
+
+  const interval = setInterval(sendNewMessage, 4000);
+  setTimeout(async () => {
+    clearInterval(interval);
+    await producer.disconnect();
+    console.log('Kafka Producer disconnected!');
+  }, 60000);
 }
 
 initProducer().catch((error) => {
-  console.log('Kafka producer error: ', error);
+  console.log('Kafka Producer error: ', error);
 });

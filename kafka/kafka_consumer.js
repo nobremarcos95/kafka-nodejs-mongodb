@@ -1,16 +1,15 @@
-const { Kafka } = require('kafkajs');
 const kafka = require('./kafka_config');
 
 const initConsumer = async () => {
-  const consumer = kafka.consumer({ groupId: "test-group" });
+  const consumer = kafka.consumer({ groupId: 'messages' });
   console.log('Connecting consumer..');
   await consumer.connect();
-  console.log('Consumer connected! Reading message..');
-  await consumer.subscribe({ topic: "test-topic", fromBeginning: true });
+  console.log('Kafka Consumer connected! Reading message..');
+  await consumer.subscribe({ topic: 'return_messages', fromBeginning: true });
 
   await consumer.run({
     eachMessage: async ({ topic, partition, message }) => {
-      console.log({
+      console.log('Consumer', {
         value: message.value.toString(),
       });
     },
@@ -18,5 +17,5 @@ const initConsumer = async () => {
 }
 
 initConsumer().catch(async (error) => {
-  console.log('Kafka consumer error: ', error);
+  console.log('Kafka Consumer error: ', error);
 });
