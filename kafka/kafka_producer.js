@@ -1,7 +1,7 @@
-const { Kafka } = require('kafkajs');
-const { Partitioners } = require('kafkajs')
-
+const { Partitioners } = require('kafkajs');
 const kafka = require('./kafka_config');
+const sampleData = require('./sample_data.json');
+
 
 const initProducer = async () => {
   const producer = kafka.producer({
@@ -10,20 +10,30 @@ const initProducer = async () => {
   });
 
   await producer.connect();
-  console.log('Producer connected! Sending message...');
+  console.log('Kafka Producer connected!');
 
-  await producer.send({
-    topic: 'test-topic',
-    messages: [
-      { value: 'Hello, deu bom!!' },
-    ],
-  });
+  const sendNewMessage = async () => {
+    const randomIndex = Math.floor(Math.random() * sampleData.requests.length);
+    const message = sampleData.requests[randomIndex];
 
-  console.log('Message sent! Disconnecting...');
-  console.log('Producer disconnected!');
-  await producer.disconnect();
+    await producer.send({
+      topic: 'users',
+      messages: [
+        { value: JSON.stringify(message) },
+      ],
+    });
+
+    console.log('Message sent!');
+  }
+
+  const interval = setInterval(sendNewMessage, 4000);
+  setTimeout(async () => {
+    clearInterval(interval);
+    await producer.disconnect();
+    console.log('Kafka Producer disconnected!');
+  }, 60000);
 }
 
 initProducer().catch((error) => {
-  console.log('Kafka producer error: ', error);
+  console.log('Kafka Producer error: ', error);
 });
